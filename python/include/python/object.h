@@ -1,4 +1,4 @@
-#ifndef Py_OBJECT_H
+﻿#ifndef Py_OBJECT_H
 #define Py_OBJECT_H
 
 #include "pymem.h"   /* _Py_tracemalloc_config */
@@ -187,9 +187,9 @@ typedef struct{
     int basicsize;
     int itemsize;
     unsigned int flags;
-	#undef slots
+#undef slots
     PyType_Slot *slots; /* terminated by slot==0. */
-	#define slots Q_SLOTS
+#define slots Q_SLOTS
 } PyType_Spec;
 
 PyAPI_FUNC(PyObject*) PyType_FromSpec(PyType_Spec*);

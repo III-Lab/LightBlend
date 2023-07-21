@@ -173,13 +173,13 @@ bool PythonThread::initializePythonInterpreter(const std::wstring& pythonHome) {
     Py_Initialize(); // 初始化
 
     if (Py_IsInitialized() == 0) {
-        std::cerr << "Python initialization failed." << std::endl;
+        qDebug() << "Python initialization failed.";
         return false;
     }
 
     PyRun_SimpleString("import sys");
     PyRun_SimpleString("sys.path.append('/')");                 // 设置 python 文件搜索路径
-    PyRun_SimpleString("sys.path.append('./yolov5')");          // 将算法添加进 python 搜索路径
+    PyRun_SimpleString("print(sys.version)");                 // 设置 python 文件搜索路径
 
     return true;
 }
@@ -188,23 +188,20 @@ bool PythonThread::importPythonModule(const std::string& moduleName, const std::
                         PyObject*& pModule, PyObject*& pClass) {
     pModule = PyImport_ImportModule(moduleName.c_str());         // 调用的文件名
     if (!pModule) {
-        qDebug() << __LINE__;
-//        std::cerr << "Failed to import python module." << std::endl;
+        qDebug() << "Failed to import python module.";
         return false;
     }
 
     PyObject *pDict = PyModule_GetDict(pModule);                // 加载文件中的函数名、类名
     if (!pDict) {
-        qDebug() << __LINE__;
-//        std::cerr << "Failed to get the module dictionary." << std::endl;
+        qDebug() << "Failed to get the module dictionary." ;
         Py_XDECREF(pModule);
         return false;
     }
 
     pClass = PyDict_GetItemString(pDict, className.c_str());    // 获取类名
     if (!pClass) {
-        qDebug() << __LINE__;
-//        std::cerr << "Failed to get class name." << std::endl;
+        qDebug() << "Failed to get class name.";
         Py_XDECREF(pModule);
         Py_XDECREF(pDict);
         return false;
@@ -216,8 +213,7 @@ bool PythonThread::importPythonModule(const std::string& moduleName, const std::
 bool PythonThread::instantiatePythonClass(PyObject* pClass, PyObject*& pDetect) {
     pDetect = PyObject_CallObject(pClass, nullptr);             // 实例化对象，相当于调用'__init__(self)',参数为null
     if (!pDetect) {
-        qDebug() << __LINE__;
-//        std::cerr << "Failed to instantiate the python class." << std::endl;
+        qDebug() << "Failed to instantiate the python class.";
         Py_XDECREF(pClass);
         return false;
     }
@@ -227,8 +223,7 @@ bool PythonThread::instantiatePythonClass(PyObject* pClass, PyObject*& pDetect) 
 
 bool PythonThread::importNumPy() {
     if (_import_array() < 0) {
-        qDebug() << __LINE__;
-//        std::cerr << "Failed to import numpy." << std::endl;
+        qDebug() << "Failed to import numpy.";
         return false;                      // 加载 numpy 模块
     }
 

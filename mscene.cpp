@@ -47,7 +47,7 @@ void MScene::dropEvent(QGraphicsSceneDragDropEvent *event)
     if(item)
     {
         connect(item, &MItem::sigGetMaskCenter, this, &MScene::slotGetMaskCenter);
-        qDebug() << QString("Add a %1 item.").arg(item->nameString());
+//        qDebug() << QString("Add a %1 item.").arg(item->nameString());
         item->setPos(event->scenePos());
         this->addItem(item);
     }

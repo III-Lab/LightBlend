@@ -80,7 +80,7 @@ class Blend:
         # 检查字节对象的编码并解码为字符串
         if isinstance(image_path, bytes):
             image_path = image_path.decode('utf-8')
-        print(image_path)
+        # print(image_path)
         
         image = cv2.imread(image_path)
         mask = self.create_mask2(mask_radius, c_x, c_y)

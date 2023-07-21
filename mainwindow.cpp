@@ -69,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent)
     else {
         qDebug() << "init python success.";
     }
+    qDebug() << "Software Version: LightBlend V1.1";
 }
 
 MainWindow::~MainWindow()
