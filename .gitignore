@@ -9,5 +9,7 @@
 temps/
 *.exe
 bin/planes/
+bin/saves/
 bin/algorithm/__pycache__/
 python/bin/
+bin/*.dll

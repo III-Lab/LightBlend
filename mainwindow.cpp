@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QDir>
+#include <QSettings>
 
 #include "itemlabel.h"
 #include "reflect.h"
@@ -54,11 +55,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::sigShowBlendImage, ui->displayWidget, &DisplayWidget::slotGetImage);
 
     connect(ui->actionShortCut_Key, &QAction::triggered, this, [=](){
-        QMessageBox::information(this, "ShortCut Key", QStringLiteral("打开图片\t\t\t\tCtrl+O\n设置保存路径\t\t\t\tCtrl+D\n下一张\t\t\t\tS\n上一张\t\t\t\tW\n保存\t\t\t\tCtrl+S"));
+        QMessageBox::information(this, "ShortCut Key", QStringLiteral("打开图片\t\t\tCtrl+O\n设置保存路径\t\t\tCtrl+D\n下一张\t\t\t\tS\n上一张\t\t\t\tW\n保存\t\t\t\tCtrl+S"));
     });
 
+    QSettings settings("./config.ini", QSettings::IniFormat);
+    QString ppath = settings.value("PythonInterpreterPath").toString();
     pythonBlend = new PythonThread;
-    bool ret = pythonBlend->init(L"G:\\RJAZ\\Miniconnda\\data", "algorithm.blend", "Blend");
+    bool ret = pythonBlend->init(ppath.toStdWString(), "algorithm.blend", "Blend");
     if(!ret)
     {
         qDebug() << "init python failed.";
@@ -124,8 +127,6 @@ QString MainWindow::getItemPixmap(const QString &name) const
 
 void MainWindow::showImage(const QString &filepath)
 {
-//    pScene->clear();
-
     QImage image(filepath);
     if(image.isNull()) return;
     pScene->setSceneRect(-image.width()/2,-image.height()/2,image.width()*2, image.height()*2);
@@ -141,6 +142,7 @@ void MainWindow::on_btnOpenDir_clicked()
 {
     QString openFolderPath = QFileDialog::getExistingDirectory(this, "Select Image path", "", QFileDialog::ShowDirsOnly);
     if (!openFolderPath.isEmpty()) {
+        qDebug() << QStringLiteral("图片路径: %1").arg(openFolderPath);
         mOpenDir = openFolderPath;
         QDir directory(openFolderPath);
         QStringList filters;
@@ -156,7 +158,7 @@ void MainWindow::on_btnOpenDir_clicked()
             item->setEditable(false);
             model->appendRow(item);
         }
-
+        qDebug() << QStringLiteral("图片总数: %1").arg(QString::number(model->rowCount()));
         ui->listView->setModel(model);
     }
 }
@@ -166,6 +168,7 @@ void MainWindow::on_btnChangeSaveDir_clicked()
     QString saveFolderPath = QFileDialog::getExistingDirectory(this, "Select save folder", "", QFileDialog::ShowDirsOnly);
     if (!saveFolderPath.isEmpty()) {
         mSaveDir = saveFolderPath;
+        qDebug() << QStringLiteral("图片保存路径: %1").arg(saveFolderPath);
     }
 }
 
@@ -201,6 +204,7 @@ void MainWindow::on_btnSave_clicked()
     QString filepath = QDir(mSaveDir).filePath(currentItemText);
 
     saveImage.save(filepath);
+    qDebug() << QStringLiteral("已保存: %1").arg(filepath);
 }
 
 void MainWindow::slotGetMaskCenter(QPointF p, int r)
