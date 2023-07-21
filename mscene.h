@@ -5,6 +5,7 @@
 
 class MScene : public QGraphicsScene
 {
+    Q_OBJECT
 public:
      MScene(QObject *parent = nullptr);
     ~MScene();
@@ -21,7 +22,10 @@ protected:
 //    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
-
+public slots:
+    void slotGetMaskCenter(QPointF, int);
+signals:
+    void sigGetMaskCenter(QPointF, int);
 };
 
 #endif // MSCENE_H

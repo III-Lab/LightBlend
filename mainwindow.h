@@ -5,6 +5,9 @@
 
 #include "mview.h"
 #include "mscene.h"
+#include "observermitem.h"
+
+#include "./python/pythonthread.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,6 +30,10 @@ public:
 
     void showImage(const QString &filepath);
 
+
+signals:
+    void sigShowBlendImage(const QImage &image);
+
 private slots:
 
     void on_btnOpenDir_clicked();
@@ -38,6 +45,8 @@ private slots:
     void on_btnPrevImage_clicked();
 
     void on_btnSave_clicked();
+public slots:
+    void slotGetMaskCenter(QPointF,int);
 
 private:
     Ui::MainWindow *ui;
@@ -47,6 +56,10 @@ private:
 
     QString mSaveDir;
     QString mOpenDir;
+
+    PythonThread *pythonBlend;
+
+    QImage saveImage;
 
 };
 #endif // MAINWINDOW_H

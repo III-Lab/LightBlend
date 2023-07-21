@@ -4,7 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 
-TARGET = ydyodraw
+TARGET = LightBlend
 TEMPLATE = app
 DESTDIR = $$PWD/bin
 
@@ -33,4 +33,7 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
+include ($$PWD/python/python_thread.pri)
+
+RC_ICONS = logo.ico
 

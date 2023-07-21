@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
+
 class MItem : public QGraphicsObject
 {
     Q_OBJECT
@@ -26,8 +27,13 @@ protected:
 private slots:
     void deleteItem(void);
 
+signals:
+
+    void sigGetMaskCenter(QPointF, int);
+
 protected:
     QString name = "base";
+    int radius;
 };
 
 
@@ -52,8 +58,6 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-private:
-    int radius;
 };
 
 #include <QFont>
@@ -85,8 +89,6 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-private:
-    int radius;
 };
 
 class MItemMask20 : public MItem
@@ -99,8 +101,6 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-private:
-    int radius;
 };
 
 class MItemMask30 : public MItem
@@ -113,8 +113,6 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-private:
-    int radius;
 };
 
 class MItemMask40 : public MItem
@@ -127,8 +125,6 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-private:
-    int radius;
 };
 
 class MItemMask50 : public MItem
@@ -141,8 +137,6 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 protected:
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-private:
-    int radius;
 };
 
 #endif // MITEM_H

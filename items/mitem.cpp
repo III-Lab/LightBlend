@@ -1,6 +1,7 @@
 ﻿#include "mitem.h"
 #include <QKeyEvent>
 #include <QGraphicsScene>
+#include "mainwindow.h"
 
 #define Item_Width       40
 #define Item_Height      40
@@ -52,7 +53,9 @@ void MItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void MItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << mapToScene(event->pos());
+    QPointF pos = mapToScene(event->pos());
+    emit sigGetMaskCenter(pos, radius);
+//    QGraphicsScene* scene = this->scene();
     QGraphicsObject::mouseReleaseEvent(event);
 }
 

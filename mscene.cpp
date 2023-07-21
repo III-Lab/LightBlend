@@ -41,10 +41,12 @@ void MScene::dropEvent(QGraphicsSceneDragDropEvent *event)
     QByteArray data = event->mimeData()->data("items");
     QByteArray classname = getItemClassName(data);
 
-    qDebug() << classname;
+//    qDebug() << classname;
     MItem *item = (MItem*)Reflect::createObject(classname);
+
     if(item)
     {
+        connect(item, &MItem::sigGetMaskCenter, this, &MScene::slotGetMaskCenter);
         qDebug() << QString("Add a %1 item.").arg(item->nameString());
         item->setPos(event->scenePos());
         this->addItem(item);
@@ -61,5 +63,10 @@ void MScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void MScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     QGraphicsScene::mouseReleaseEvent(mouseEvent);
+}
+
+void MScene::slotGetMaskCenter(QPointF pos, int r)
+{
+    emit sigGetMaskCenter(pos,r);
 }
 

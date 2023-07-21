@@ -30,10 +30,11 @@ MainWindow::MainWindow(QWidget *parent)
     itemDockWidgetInit();
 
     QList<int> sizes1;
-    sizes1 << 80000 << 10000;
+    sizes1 << 80000 << 25000;
     ui->splitter->setSizes(sizes1);
 
     pScene = new MScene(this);
+    connect(pScene, &MScene::sigGetMaskCenter, this, &MainWindow::slotGetMaskCenter);
     ui->view->setScene(pScene);
 
     pixmapItem = new QGraphicsPixmapItem();
@@ -44,7 +45,27 @@ MainWindow::MainWindow(QWidget *parent)
         QString currentItemText = index.data(Qt::DisplayRole).toString();
         QString filepath = QDir(mOpenDir).filePath(currentItemText);
         showImage(filepath);
+
+        QImage image = QImage(256,256,QImage::Format_RGB32);
+        image.fill(Qt::black);
+        sigShowBlendImage(image);
     });
+
+    connect(this, &MainWindow::sigShowBlendImage, ui->displayWidget, &DisplayWidget::slotGetImage);
+
+    connect(ui->actionShortCut_Key, &QAction::triggered, this, [=](){
+        QMessageBox::information(this, "ShortCut Key", QStringLiteral("打开图片\t\t\t\tCtrl+O\n设置保存路径\t\t\t\tCtrl+D\n下一张\t\t\t\tS\n上一张\t\t\t\tW\n保存\t\t\t\tCtrl+S"));
+    });
+
+    pythonBlend = new PythonThread;
+    bool ret = pythonBlend->init(L"G:\\RJAZ\\Miniconnda\\data", "algorithm.blend", "Blend");
+    if(!ret)
+    {
+        qDebug() << "init python failed.";
+    }
+    else {
+        qDebug() << "init python success.";
+    }
 }
 
 MainWindow::~MainWindow()
@@ -103,6 +124,8 @@ QString MainWindow::getItemPixmap(const QString &name) const
 
 void MainWindow::showImage(const QString &filepath)
 {
+//    pScene->clear();
+
     QImage image(filepath);
     if(image.isNull()) return;
     pScene->setSceneRect(-image.width()/2,-image.height()/2,image.width()*2, image.height()*2);
@@ -168,5 +191,34 @@ void MainWindow::on_btnPrevImage_clicked()
 
 void MainWindow::on_btnSave_clicked()
 {
+    if(mSaveDir.isEmpty())
+    {
+        QMessageBox::warning(this, "Warning", "Not set save the path");
+        return;
+    }
 
+    QString currentItemText = ui->listView->currentIndex().data(Qt::DisplayRole).toString();
+    QString filepath = QDir(mSaveDir).filePath(currentItemText);
+
+    saveImage.save(filepath);
+}
+
+void MainWindow::slotGetMaskCenter(QPointF p, int r)
+{
+    QImage image_ret;
+
+    int index = ui->listView->currentIndex().row();
+    QModelIndex modelIndex = ui->listView->model()->index(index, 0);
+    ui->listView->setCurrentIndex(modelIndex);
+    QString currentItemText = ui->listView->currentIndex().data(Qt::DisplayRole).toString();
+    QString filepath = QDir(mOpenDir).filePath(currentItemText);
+
+    int ret = pythonBlend->blend(filepath, r, int(p.x()), int(p.y()), image_ret);
+    if(!ret)
+    {
+        qDebug() << pythonBlend->errorString();
+        return;
+    }
+    saveImage = image_ret;
+    emit sigShowBlendImage(image_ret);
 }
