@@ -6,17 +6,31 @@
 *.obj
 temps/
 *.exe
-
+*.pyc
 
 
 *.jpg
 *.png
 *.bmp
 !figures/*.png
-mingw-build/moc/
-mingw-build/ui/
-mingw-build/objects/
 
-msvc-build/moc/
-msvc-build/ui/
-msvc-build/objects/
+
+
+mingw-build/
+!mingw-build/*.py
+!mingw-build/config.ini
+!mingw-build/items.txt
+!mingw-build/images/*.png
+!mingw-build/libopencv_world452.dll
+!mingw-build/python3.dll
+!mingw-build/python38.dll
+
+msvc-build/
+!msvc-build/*.py
+!msvc-build/config.ini
+!msvc-build/items.txt
+!msvc-build/images/*.png
+!msvc-build/opencv_world452.dll
+!msvc-build/python3.dll
+!msvc-build/python38.dll
+
