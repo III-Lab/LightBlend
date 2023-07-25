@@ -12,7 +12,7 @@ temps/
 *.jpg
 *.png
 *.bmp
-!figures/
+!figures/*.png
 mingw-build/moc/
 mingw-build/ui/
 mingw-build/objects/
