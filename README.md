@@ -1,10 +1,4 @@
-
-
-
-
-
-
-
+# 激光干扰光斑注入软件
 
 
 
@@ -15,6 +9,7 @@
 ## 参考
 
 1. [QT反射](https://juejin.cn/post/7113839621661786126)
+1. [ydyodraw](https://github.com/yunke120/ydyodraw.git)
 
 
 

@@ -34,6 +34,8 @@ mingw-build/platforms/
 mingw-build/styles/
 mingw-build/translations/
 mingw-build/ui/
+mingw-build/Qt5OpenGL.dll
+mingw-build/Qt5Test.dll
 
 msvc-build/D3Dcompiler_47.dll
 msvc-build/Qt5Core.dll
@@ -51,3 +53,5 @@ msvc-build/platforms/
 msvc-build/styles/
 msvc-build/translations/
 msvc-build/ui/
+msvc-build/Qt5OpenGL.dll
+msvc-build/Qt5Test.dll
