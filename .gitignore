@@ -7,10 +7,12 @@
 temps/
 *.exe
 
+
+
 *.jpg
 *.png
 *.bmp
-
+!figures/
 mingw-build/moc/
 mingw-build/ui/
 mingw-build/objects/
